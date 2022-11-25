@@ -7,16 +7,11 @@
 
 import UIKit
 
-class FavoriteListVC: UIViewController {
+final class FavoriteListVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-
 }
