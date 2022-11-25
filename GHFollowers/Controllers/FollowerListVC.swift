@@ -16,6 +16,7 @@ class FollowerListVC: GFDataLoadingVC {
     var username: String!
     
     var followers = [Follower]()
+    var filteredFollowers = [Follower]()
     
     var currentPage = 1
     var hasMoreFollowers = true
@@ -24,6 +25,7 @@ class FollowerListVC: GFDataLoadingVC {
         configureView()
         configureCollectionView()
         configureDataSource()
+        configureSearchController()
         fetchFollowers()
         
     }
@@ -62,7 +64,9 @@ class FollowerListVC: GFDataLoadingVC {
         var snp = NSDiffableDataSourceSnapshot<Section, Follower>()
         snp.appendSections([.main])
         snp.appendItems(followers)
-        dataSource.apply(snp, animatingDifferences: true)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snp, animatingDifferences: true)
+        }
     }
     
     private func configureView() {
@@ -78,6 +82,15 @@ class FollowerListVC: GFDataLoadingVC {
         
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
     }
+    
+    private func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search for a user"
+            
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
 }
 
 extension FollowerListVC: UICollectionViewDelegate {
@@ -90,5 +103,17 @@ extension FollowerListVC: UICollectionViewDelegate {
             currentPage += 1
             fetchFollowers()
         }
+    }
+}
+
+extension FollowerListVC: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredFollowers.removeAll()
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            updateData(with: followers)
+            return
+        }
+        filteredFollowers = followers.filter{$0.login.lowercased().contains(filter.lowercased())}
+        updateData(with: filteredFollowers)
     }
 }
