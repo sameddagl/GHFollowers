@@ -18,6 +18,7 @@ class FollowerListVC: GFDataLoadingVC {
     var followers = [Follower]()
     
     var currentPage = 1
+    var hasMoreFollowers = true
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -38,6 +39,9 @@ class FollowerListVC: GFDataLoadingVC {
             self.dismissLoadingScreen()
             switch result {
             case .success(let followers):
+                if followers.count < 100 {
+                    self.hasMoreFollowers = false
+                }
                 self.followers.append(contentsOf: followers)
                 self.updateData(with: self.followers)
             case .failure(let error):
@@ -70,6 +74,21 @@ class FollowerListVC: GFDataLoadingVC {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnLayout(view: self.view))
         view.addSubview(collectionView)
         
+        collectionView.delegate = self
+        
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
+    }
+}
+
+extension FollowerListVC: UICollectionViewDelegate {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let height = view.frame.height
+        let contentHeight = collectionView.contentSize.height
+        let offset = collectionView.contentOffset.y
+        
+        if height + offset >= contentHeight && hasMoreFollowers {
+            currentPage += 1
+            fetchFollowers()
+        }
     }
 }

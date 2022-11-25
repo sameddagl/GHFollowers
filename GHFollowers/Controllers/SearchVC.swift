@@ -44,6 +44,7 @@ final class SearchVC: UIViewController {
         
         view.addSubview(userNameTextField)
         userNameTextField.delegate = self
+        userNameTextField.text = "SAllen0400"
         
         view.addSubview(actionButton)
         

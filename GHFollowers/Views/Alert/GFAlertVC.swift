@@ -73,7 +73,9 @@ final class GFAlertVC: UIViewController {
     }
     
     @objc func actionButtonTapped() {
-        dismissAlertVC()
+        DispatchQueue.main.async {
+            self.dismiss(animated: true)
+        }
     }
     
     required init?(coder: NSCoder) {

@@ -16,15 +16,15 @@ class GFDataLoadingVC: UIViewController {
     }
     
     func showLoadingScreen() {
-        containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
-        containerView.pinTo(view: self.view)
 
-        containerView.backgroundColor = .black.withAlphaComponent(0.25)
+        containerView.backgroundColor = .systemBackground.withAlphaComponent(0.25)
         
         let ac = UIActivityIndicatorView(style: .medium)
         ac.translatesAutoresizingMaskIntoConstraints = false
+        ac.color = .systemGreen
+        
         containerView.addSubview(ac)
         ac.center(to: containerView)
         
