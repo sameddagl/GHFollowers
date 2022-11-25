@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FollowerListVC: UIViewController {
+class FollowerListVC: GFDataLoadingVC {
     enum Section {case main}
     
     var collectionView: UICollectionView!
@@ -32,7 +32,10 @@ class FollowerListVC: UIViewController {
     }
     
     private func fetchFollowers() {
-        NetworkLayer.shared.fetchFollowers(with: username, page: currentPage) { result in
+        showLoadingScreen()
+        NetworkLayer.shared.fetchFollowers(with: username, page: currentPage) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingScreen()
             switch result {
             case .success(let followers):
                 self.followers.append(contentsOf: followers)

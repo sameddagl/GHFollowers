@@ -30,6 +30,7 @@
 		2C81F04429311956003C2C6A /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81F04329311956003C2C6A /* UIHelper.swift */; };
 		2C81F04729311B25003C2C6A /* GFImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81F04629311B25003C2C6A /* GFImageView.swift */; };
 		2C81F04A29311BAF003C2C6A /* FollowerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81F04929311BAF003C2C6A /* FollowerCell.swift */; };
+		2C81F04C293121FD003C2C6A /* GFDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81F04B293121FD003C2C6A /* GFDataLoadingVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		2C81F04329311956003C2C6A /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		2C81F04629311B25003C2C6A /* GFImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFImageView.swift; sourceTree = "<group>"; };
 		2C81F04929311BAF003C2C6A /* FollowerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerCell.swift; sourceTree = "<group>"; };
+		2C81F04B293121FD003C2C6A /* GFDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFDataLoadingVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 		2C81F0202931061F003C2C6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2C81F04B293121FD003C2C6A /* GFDataLoadingVC.swift */,
 				2C81F04829311B97003C2C6A /* Cell */,
 				2C81F04529311B13003C2C6A /* Images */,
 				2C81F039293110C6003C2C6A /* Alert */,
@@ -300,6 +303,7 @@
 				2C81F03B293110D3003C2C6A /* GFAlertVC.swift in Sources */,
 				2C81F03829310EA9003C2C6A /* FollowerListVC.swift in Sources */,
 				2C81F04729311B25003C2C6A /* GFImageView.swift in Sources */,
+				2C81F04C293121FD003C2C6A /* GFDataLoadingVC.swift in Sources */,
 				2C81F01F293104C2003C2C6A /* FavoriteListVC.swift in Sources */,
 				2C81F04229311613003C2C6A /* UIViewController+Ext.swift in Sources */,
 				2C81F0052930FB3B003C2C6A /* AppDelegate.swift in Sources */,
