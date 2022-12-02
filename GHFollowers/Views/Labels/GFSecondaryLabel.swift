@@ -1,5 +1,5 @@
 //
-//  GFButton.swift
+//  GFSecondaryLabel.swift
 //  GHFollowers
 //
 //  Created by Samed Dağlı on 25.11.2022.
@@ -7,32 +7,32 @@
 
 import UIKit
 
-final class GFButton: UIButton {
-
+final class GFSecondaryLabel: UILabel {
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
     }
     
-    convenience init(title: String, backgroundColor: UIColor) {
+    convenience init(alingment: NSTextAlignment) {
         self.init(frame: .zero)
-        set(title: title, backgroundColor: backgroundColor)
-
+        textAlignment = alingment
     }
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        textColor = .secondaryLabel
+        font = .preferredFont(forTextStyle: .body)
         
-        layer.cornerRadius = 10
+        numberOfLines = 0
+        lineBreakMode = .byTruncatingTail
+        
+        minimumScaleFactor = 0.7
+        adjustsFontSizeToFitWidth = true
+        
     }
-    
-    func set(title: String, backgroundColor: UIColor) {
-        setTitle(title, for: .normal)
-        self.backgroundColor = backgroundColor
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -52,6 +52,43 @@ final class NetworkLayer {
         }.resume()
     }
     
+    func fetchUserInfo(with username: String, completion: @escaping(Result<User, GFError>) -> Void) {
+        let endPoint = baseURL + "\(username)"
+        
+        guard let url = URL(string: endPoint) else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let _ = error {
+                completion(.failure(.unableToComplete))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.noUser))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.invalidData))
+                return
+            }
+            
+            do{
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.dateDecodingStrategy = .iso8601
+                let decodedData = try decoder.decode(User.self, from: data)
+                completion(.success(decodedData))
+            }
+            catch {
+                completion(.failure(.invalidData))
+            }
+        }.resume()
+    }
+    
     func downloadImage(withURL url: String, completion: @escaping(UIImage?) -> Void) {
         let key = NSString(string: url)
         

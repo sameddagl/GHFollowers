@@ -20,6 +20,7 @@ class FollowerListVC: GFDataLoadingVC {
     
     var currentPage = 1
     var hasMoreFollowers = true
+    var isSearching = false
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -30,8 +31,7 @@ class FollowerListVC: GFDataLoadingVC {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        title = username
+        configureNavBar()
     }
     
     private func fetchFollowers() {
@@ -69,9 +69,29 @@ class FollowerListVC: GFDataLoadingVC {
         }
     }
     
+    @objc private func getUserInfo() {
+        let vc = UserInfoVC(username: username, userItSelf: true, delegate: self)
+        let navController = UIHelper.createVCWithNavController(vc: vc)
+        present(navController, animated: true)
+    }
+    
+    @objc private func favoriteUser() {
+        
+    }
+    
     private func configureView() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    private func configureNavBar() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        title = username
+        
+        let infoButton = UIBarButtonItem(image: UIImage(systemName: SFSymbols.info), style: .done, target: self, action: #selector(getUserInfo))
+        
+        let favoriteButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(favoriteUser))
+        navigationItem.rightBarButtonItems = [favoriteButton, infoButton]
     }
     
     private func configureCollectionView() {
@@ -104,16 +124,35 @@ extension FollowerListVC: UICollectionViewDelegate {
             fetchFollowers()
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = isSearching ? filteredFollowers[indexPath.item] : followers[indexPath.item]
+        let vc = UserInfoVC(username: selectedItem.login, userItSelf: false, delegate: self)
+        let navController = UIHelper.createVCWithNavController(vc: vc)
+        present(navController, animated: true)
+    }
 }
 
 extension FollowerListVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         filteredFollowers.removeAll()
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            isSearching = false
             updateData(with: followers)
             return
         }
+        isSearching = true
         filteredFollowers = followers.filter{$0.login.lowercased().contains(filter.lowercased())}
         updateData(with: filteredFollowers)
+    }
+}
+
+extension FollowerListVC: UserInfoDelegate {
+    func didRequestFollowers(with username: String) {
+        followers.removeAll()
+        self.username = username
+        title = username
+        fetchFollowers()
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 }

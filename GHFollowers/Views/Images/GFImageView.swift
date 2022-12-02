@@ -21,6 +21,8 @@ class GFImageView: UIImageView {
         layer.cornerRadius = 20
         layer.masksToBounds = true
         
+        tintColor = .secondaryLabel
+        
         image = Images.placeholder
     }
     

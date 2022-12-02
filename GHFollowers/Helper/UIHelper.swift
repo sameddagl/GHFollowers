@@ -20,6 +20,14 @@ struct UIHelper {
         layout.sectionInset = .init(top: padding, left: padding, bottom: padding, right: padding)
         layout.itemSize = .init(width: itemWidth, height: itemWidth + 50)
         return layout
-        
+    }
+    
+    static func createVCWithNavController(vc: UIViewController) -> UINavigationController {
+        let navController = UINavigationController(rootViewController: vc)
+        let appereance = UINavigationBarAppearance()
+        appereance.configureWithDefaultBackground()
+        navController.navigationBar.standardAppearance = appereance
+        navController.navigationBar.scrollEdgeAppearance = appereance
+        return navController
     }
 }

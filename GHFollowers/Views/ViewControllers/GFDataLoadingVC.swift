@@ -19,9 +19,9 @@ class GFDataLoadingVC: UIViewController {
         containerView = UIView(frame: view.bounds)
         view.addSubview(containerView)
 
-        containerView.backgroundColor = .systemBackground.withAlphaComponent(0.25)
+        containerView.backgroundColor = .black.withAlphaComponent(0.10)
         
-        let ac = UIActivityIndicatorView(style: .medium)
+        let ac = UIActivityIndicatorView(style: .large)
         ac.translatesAutoresizingMaskIntoConstraints = false
         ac.color = .systemGreen
         
