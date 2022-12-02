@@ -23,7 +23,7 @@ final class SearchVC: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    //MARK: - Go to ollowers age
+    //MARK: - Go to followers age
     private func goToFollowersPage() {
         guard let username = userNameTextField.text, !username.isEmpty else {
             presentAlertVC(title: "No username", message: "Please enter a username.")
@@ -32,8 +32,7 @@ final class SearchVC: UIViewController {
         
         userNameTextField.resignFirstResponder()
         
-        let vc = FollowerListVC()
-        vc.username = username
+        let vc = FollowerListBuilder.make(with: username)
         navigationController?.pushViewController(vc, animated: true)
     }
     
