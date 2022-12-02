@@ -12,8 +12,8 @@ class GFItemInfoVC: UIViewController {
     let itemInfo2 = GFItemInfo(frame: .zero)
     let actionButton = GFButton(frame: .zero)
     
-    var user: User!
-    init(user: User) {
+    var user: UserInfoPresentation!
+    init(user: UserInfoPresentation) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
     }

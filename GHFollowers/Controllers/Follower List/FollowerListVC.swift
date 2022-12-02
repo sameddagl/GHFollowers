@@ -82,7 +82,7 @@ extension FollowerListVC: FollowerListDelegate {
     func navigate(to route: FollowerListRoute) {
         switch route {
         case .userInfo(let username):
-            let vc = UserInfoVC(username: username, userItSelf: false, delegate: self)
+            let vc = UserInfoVCBuilder.make(rootVC: self, with: username)
             let navController = UIHelper.createVCWithNavController(vc: vc)
             present(navController, animated: true)
         }
@@ -100,7 +100,6 @@ extension FollowerListVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.getUserInfo(at: indexPath.item)
-        
     }
 }
 

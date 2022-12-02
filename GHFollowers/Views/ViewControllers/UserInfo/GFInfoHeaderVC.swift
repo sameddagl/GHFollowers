@@ -8,16 +8,16 @@
 import UIKit
 
 class GFInfoHeaderVC: UIViewController {
-    let avatarImageView = GFImageView(frame: .zero)
+    let avatarImageView = GFImageView(service: app.service)
     let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 20)
     let nameLabel = GFSecondaryLabel(alingment: .left)
     let locationImageView = UIImageView()
     let locationLabel = GFSecondaryLabel(alingment: .left)
     let bioLabel = GFSecondaryLabel(alingment: .left)
     
-    var user: User!
+    var user: UserInfoPresentation!
     
-    init(user: User!) {
+    init(user: UserInfoPresentation!) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
         configureUI()

@@ -17,43 +17,16 @@ class UserInfoVC: GFDataLoadingVC {
     let itemInfo2 = UIView()
     let dateLabel = GFTitleLabel(alignment: .center, fontSize: 14)
     
-    var username: String!
-    var userItSelf: Bool!
-    
-    weak var delegate: UserInfoDelegate!
-    
-    init(username: String!, userItSelf: Bool, delegate: UserInfoDelegate) {
-        super.init(nibName: nil, bundle: nil)
-        self.username = username
-        self.userItSelf = userItSelf
-        self.delegate = delegate
-    }
+    var viewModel: UserInfoVMProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
         configureUIElements()
         layoutUI()
-        getUserInfo()
+        viewModel.load()
     }
     
-    //MARK: - Network call to get user info
-    private func getUserInfo() {
-        showLoadingScreen()
-        NetworkLayer.shared.fetchUserInfo(with: username) { [weak self] result in
-            guard let self = self else { return }
-            self.dismissLoadingScreen()
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async {
-                    self.configureUI(user: user)
-                }
-            case .failure(let error):
-                self.presentAlertVC(title: "An error occured", message: error.rawValue)
-            }
-        }
-    }
-
     //MARK: - Adding child vcs to view
     private func add(childVC: UIViewController, to containerView: UIView) {
         self.addChild(childVC)
@@ -66,16 +39,47 @@ class UserInfoVC: GFDataLoadingVC {
     @objc func doneTapped() {
         dismiss(animated: true)
     }
-    
-    //MARK: - UI Related
-    private func configureUI(user: User) {
-        let repoInfoVC = GFRepoInfoVC(user: user)
-        repoInfoVC.delegate = self
-        
-        let followerInfoVC = GFFollowerInfoVC(user: user)
-        followerInfoVC.delegate = self
-        
+}
+
+extension UserInfoVC: UserInfoVMDelegate {
+    func handleOutput(_ output: UserInfoOutputs) {
+        switch output {
+        case .isLoading(let isLoading):
+            isLoading ? self.showLoadingScreen() : self.dismissLoadingScreen()
+        case .updateUserInfo(let user):
+            self.configureUI(user: user)
+        case .getGithubPage(let url):
+            presentSafariVC(withURL: url)
+        case .getFollowers:
+            dismiss(animated: true)
+        case .errorOccured(let title, let message):
+            self.presentAlertVC(title: title, message: message)
+        }
+    }
+}
+
+extension UserInfoVC: GFRepoInfoDelegate {
+    func didRequestGithubPage(withURL url: String) {
+        viewModel.getGithubPage(withURL: url)
+    }
+}
+
+extension UserInfoVC: GFFollowerInfoDelegate {
+    func didRequestFollowers(with username: String) {
+        viewModel.getFollowers()
+    }
+}
+
+//MARK: - UI Related
+extension UserInfoVC {
+    private func configureUI(user: UserInfoPresentation) {
         DispatchQueue.main.async {
+            let repoInfoVC = GFRepoInfoVC(user: user)
+            repoInfoVC.delegate = self
+            
+            let followerInfoVC = GFFollowerInfoVC(user: user)
+            followerInfoVC.delegate = self
+            
             self.add(childVC: GFInfoHeaderVC(user: user), to: self.detailsContainer)
             self.add(childVC: repoInfoVC, to: self.itemInfo1)
             self.add(childVC: followerInfoVC, to: self.itemInfo2)
@@ -107,20 +111,13 @@ class UserInfoVC: GFDataLoadingVC {
             
             itemInfo1.topAnchor.constraint(equalTo: detailsContainer.bottomAnchor, constant: padding),
             itemInfo1.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.23),
-
+            
+            itemInfo2.topAnchor.constraint(equalTo: itemInfo1.bottomAnchor, constant: padding),
+            itemInfo2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.23),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemInfo2.bottomAnchor, constant: padding)
         ])
         
-        if userItSelf {
-            itemInfo2.removeFromSuperview()
-            dateLabel.topAnchor.constraint(equalTo: itemInfo1.bottomAnchor, constant: padding).isActive = true
-        }
-        
-        else {
-            itemInfo2.topAnchor.constraint(equalTo: itemInfo1.bottomAnchor, constant: padding).isActive = true
-            itemInfo2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.23).isActive = true
-            
-            dateLabel.topAnchor.constraint(equalTo: itemInfo2.bottomAnchor, constant: padding).isActive = true
-        }
     }
     
     private func configureUIElements() {
@@ -131,20 +128,4 @@ class UserInfoVC: GFDataLoadingVC {
         itemInfo2.layer.cornerRadius = 20
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension UserInfoVC: GFRepoInfoDelegate {
-    func didRequestGithubPage(withURL url: String) {
-        presentSafariVC(withURL: url)
-    }
-}
-
-extension UserInfoVC: GFFollowerInfoDelegate {
-    func didRequestFollowers(with username: String) {
-        dismiss(animated: true)
-        delegate.didRequestFollowers(with: username)
-    }
 }
