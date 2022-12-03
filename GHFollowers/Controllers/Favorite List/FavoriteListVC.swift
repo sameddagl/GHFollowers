@@ -17,6 +17,10 @@ final class FavoriteListVC: GFDataLoadingVC {
         super.viewDidLoad()
         configureView()
         configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.load()
     }
 }
@@ -26,7 +30,10 @@ extension FavoriteListVC: FavoriteListVMDelegate {
         switch output {
         case .updateData(let favorites):
             self.favorites = favorites
-            print(self.favorites)
+            self.tableView.reloadData()
+        case .removeFromFavoritesAt(let index):
+            favorites.remove(at: index)
+            self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         case .errorOccured(let title, let message):
             self.presentAlertVC(title: title, message: message)
         case .popUpUserInfoScreen(let viewModel):
@@ -83,6 +90,8 @@ extension FavoriteListVC: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
+        if editingStyle == .delete {
+            viewModel.removeFromFavorites(at: indexPath.item)
+        }
     }
 }

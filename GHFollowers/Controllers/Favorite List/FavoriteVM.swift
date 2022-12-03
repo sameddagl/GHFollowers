@@ -35,6 +35,19 @@ final class FavoriteVM: FavoriteListVMProtocol {
         notify(.popUpUserInfoScreen(viewModel: UserInfoVM(username: selectedItem.username, userItself: false, service: app.service)))
     }
     
+    func removeFromFavorites(at index: Int) {
+        let userToRemove = favorites[index]
+        persistanceManager.updateDataWith(newFavorite: userToRemove, actionType: .remove) { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                self.notify(.errorOccured(title: "Unable to complete", message: error.rawValue))
+                return
+            }
+            self.favorites.remove(at: index)
+            self.notify(.removeFromFavoritesAt(index: index))
+        }
+    }
+    
     func didRequestFollowers(username: String) {
         notify(.didRequestFollowers(viewModel: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager)))
     }
