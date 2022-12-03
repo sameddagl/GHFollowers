@@ -10,15 +10,14 @@ import UIKit
 class FollowerListVC: GFDataLoadingVC {
     enum Section {case main}
     
+    private var collectionView: UICollectionView!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, FollowerListPresentation>!
+    
+    private var followers = [FollowerListPresentation]()
+    private var filteredFollowers = [FollowerListPresentation]()
+    
     var viewModel: FollowerListVMProtocol!
-    
-    var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<Section, FollowerListPresentation>!
-    
-    var followers = [FollowerListPresentation]()
-    var filteredFollowers = [FollowerListPresentation]()
         
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -32,6 +31,7 @@ class FollowerListVC: GFDataLoadingVC {
         configureNavBar()
     }
     
+    //MARK: - Collection View Data Configuration
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, FollowerListPresentation>(collectionView: collectionView, cellProvider: { collectionView, indexPath, follower in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseID, for: indexPath) as! FollowerCell
@@ -49,16 +49,18 @@ class FollowerListVC: GFDataLoadingVC {
         }
     }
     
+    //MARK: - Get searched user info tapped
     @objc private func getUserInfo() {
         viewModel.getUserInfo()
     }
     
+    //MARK: - Favorite user tapped
     @objc private func favoriteUser() {
         viewModel.saveUserTapped()
     }
 }
 
-//MARK: - View Model Outputs
+//MARK: - Handle view model outputs
 extension FollowerListVC: FollowerListDelegate {
     func handleOutputs(_ output: FollowerListOutputs) {
         switch output {
@@ -91,6 +93,7 @@ extension FollowerListVC: FollowerListDelegate {
     }
 }
 
+//MARK: - Did request followers from user info vc
 extension FollowerListVC: FollowerRequestDelegate {
     func didRequestFollowers(with username: String) {
         viewModel.didRequestFollowers(username: username)
@@ -118,7 +121,6 @@ extension FollowerListVC: UISearchResultsUpdating {
         viewModel.searchForUser(filter: searchController.searchBar.text)
     }
 }
-
 
 //MARK: - UI Related
 extension FollowerListVC {

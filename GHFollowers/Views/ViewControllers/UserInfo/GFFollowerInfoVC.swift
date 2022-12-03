@@ -11,7 +11,7 @@ protocol FollowerInfoDelegate: AnyObject {
     func requestFollowers()
 }
 
-class GFFollowerInfoVC: GFItemInfoVC {
+final class GFFollowerInfoVC: GFItemInfoVC {
     
     weak var delegate: FollowerInfoDelegate!
     

@@ -48,7 +48,6 @@ final class PersistanceManager: PersistanceManagerProtocol {
         }
     }
     
-    
     func retrieveData(completion: @escaping(Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: DefaultsKey.favorites) as? Data else {
             completion(.success([]))

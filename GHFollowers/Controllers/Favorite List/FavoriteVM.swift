@@ -17,6 +17,7 @@ final class FavoriteVM: FavoriteListVMProtocol {
         self.persistanceManager = persistanceManager
     }
     
+    //MARK: - Load with favorites
     func load() {
         persistanceManager.retrieveData { [weak self] result in
             guard let self = self else { return }
@@ -30,11 +31,13 @@ final class FavoriteVM: FavoriteListVMProtocol {
         }
     }
     
+    //MARK: - User select a favorite
     func selectItem(at index: Int) {
         let selectedItem = FavoriteListPresentation(user: favorites[index])
         notify(.popUpUserInfoScreen(viewModel: UserInfoVM(username: selectedItem.username, userItself: false, service: app.service)))
     }
     
+    //MARK: - User delete a favorite
     func removeFromFavorites(at index: Int) {
         let userToRemove = favorites[index]
         persistanceManager.updateDataWith(newFavorite: userToRemove, actionType: .remove) { [weak self] error in
@@ -48,6 +51,7 @@ final class FavoriteVM: FavoriteListVMProtocol {
         }
     }
     
+    //MARK: - User select to get followers from user info
     func didRequestFollowers(username: String) {
         notify(.didRequestFollowers(viewModel: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager)))
     }

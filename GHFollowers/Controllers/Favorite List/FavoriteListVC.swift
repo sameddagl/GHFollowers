@@ -8,11 +8,12 @@
 import UIKit
 
 final class FavoriteListVC: GFDataLoadingVC {
-    var tableView: UITableView!
+    private var tableView: UITableView!
+        
+    private var favorites = [FavoriteListPresentation]()
     
     var viewModel: FavoriteListVMProtocol!
     
-    private var favorites = [FavoriteListPresentation]()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -25,6 +26,7 @@ final class FavoriteListVC: GFDataLoadingVC {
     }
 }
 
+//MARK: - Handle view model outputs
 extension FavoriteListVC: FavoriteListVMDelegate {
     func handleOutput(_ output: FavoriteListOutputs) {
         switch output {
@@ -47,6 +49,7 @@ extension FavoriteListVC: FavoriteListVMDelegate {
     }
 }
 
+//MARK: - Did request followers from user info vc
 extension FavoriteListVC: FollowerRequestDelegate {
     func didRequestFollowers(with username: String) {
         viewModel.didRequestFollowers(username: username)
@@ -55,13 +58,13 @@ extension FavoriteListVC: FollowerRequestDelegate {
 
 //MARK: - UI Related
 extension FavoriteListVC {
-    func configureView() {
+    private func configureView() {
         title = "Favorites"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .systemBackground
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView = UITableView(frame: view.bounds)
         tableView.dataSource = self
         tableView.delegate = self

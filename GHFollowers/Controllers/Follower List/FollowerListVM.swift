@@ -26,6 +26,7 @@ final class FollowerListVM: FollowerListVMProtocol {
         self.persistanceManager = persistanceManager
     }
     
+    //MARK: - Load followers
     func load() {
         notify(.updateTitle(userName))
         notify(.isLoading(true))
@@ -46,6 +47,7 @@ final class FollowerListVM: FollowerListVMProtocol {
         }
     }
     
+    //MARK: - Searching for a user
     func searchForUser(filter: String?) {
         filteredFollowers.removeAll()
         guard let filter = filter, !filter.isEmpty else {
@@ -55,11 +57,14 @@ final class FollowerListVM: FollowerListVMProtocol {
             return
         }
         isSearching = true
+        
         filteredFollowers = followers.filter{$0.login.lowercased().contains(filter.lowercased())}
+        
         let followerPresentation = filteredFollowers.map({FollowerListPresentation(follower: $0)})
         notify(.updateSearchResults(followers: followerPresentation))
     }
     
+    //MARK: - Pagination
     func pagination(height: CGFloat, contentHeight: CGFloat, offset: CGFloat) {
         if height + offset >= contentHeight && hasMoreFollowers {
             currentPage += 1
@@ -67,16 +72,40 @@ final class FollowerListVM: FollowerListVMProtocol {
         }
     }
     
+    //MARK: - Get selected user info
     func getUserInfo(at index: Int) {
-        //TODO
         let selectedItem = isSearching ? filteredFollowers[index] : followers[index]
         delegate?.navigate(to: .userInfo(UserInfoVM(username: selectedItem.login, userItself: false, service: app.service)))
     }
     
+    //MARK: - Get searched user info
     func getUserInfo() {
         delegate?.navigate(to: .userInfo(UserInfoVM(username: self.userName, userItself: true, service: app.service)))
     }
     
+    //MARK: - Save user
+    func saveUserTapped() {
+        service.fetchUserInfo(with: userName) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let user):
+                self.saveUser(user: user)
+            case .failure(let error):
+                self.notify(.throwAlert(title: "An error occurde", message: error.rawValue))
+            }
+        }
+    }
+    
+    //MARK: - Request followers from user info
+    func didRequestFollowers(username: String) {
+        followers.removeAll()
+        self.userName = username
+        currentPage = 1
+        load()
+        notify(.scrollToTop)
+    }
+    
+    //MARK: - Save user logic
     private func saveUser(user: User) {
         let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
         persistanceManager.updateDataWith(newFavorite: favorite, actionType: .add) { [weak self] error in
@@ -94,28 +123,8 @@ final class FollowerListVM: FollowerListVMProtocol {
             }
         }
     }
-    
-    func saveUserTapped() {
-        service.fetchUserInfo(with: userName) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let user):
-                self.saveUser(user: user)
-            case .failure(let error):
-                self.notify(.throwAlert(title: "An error occurde", message: error.rawValue))
-            }
-        }
-    }
 
-    
-    func didRequestFollowers(username: String) {
-        followers.removeAll()
-        self.userName = username
-        currentPage = 1
-        load()
-        notify(.scrollToTop)
-    }
-
+    //MARK: - Handle with outputs
     private func notify(_ output: FollowerListOutputs) {
         delegate?.handleOutputs(output)
     }

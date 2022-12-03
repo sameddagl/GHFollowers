@@ -21,6 +21,7 @@ final class UserInfoVM: UserInfoVMProtocol {
         self.userItself = userItself
     }
     
+    //MARK: - Load with user info
     func load() {
         notify(.userItSelf(userItself))
         notify(.isLoading(true))
@@ -36,14 +37,17 @@ final class UserInfoVM: UserInfoVMProtocol {
         }
     }
     
+    //MARK: - User select to get github page
     func getGithubPage(withURL url: String) {
         notify(.getGithubPage(url: url))
     }
     
+    //MARK: - User select to get followers of user
     func getFollowers() {
         notify(.getFollowers(username: username))
     }
     
+    //MARK: - Handle with outputs
     private func notify(_ output: UserInfoOutputs) {
         delegate?.handleOutput(output)
     }

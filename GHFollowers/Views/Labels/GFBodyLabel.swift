@@ -30,7 +30,6 @@ final class GFBodyLabel: UILabel {
         
         minimumScaleFactor = 0.6
         adjustsFontSizeToFitWidth = true
-        
     }
 
     required init?(coder: NSCoder) {

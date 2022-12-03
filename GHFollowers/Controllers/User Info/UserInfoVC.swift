@@ -7,11 +7,11 @@
 
 import UIKit
 
-class UserInfoVC: GFDataLoadingVC {
-    let detailsContainer = UIView()
-    let itemInfo1 = UIView()
-    let itemInfo2 = UIView()
-    let dateLabel = GFTitleLabel(alignment: .center, fontSize: 14)
+final class UserInfoVC: GFDataLoadingVC {
+    private let detailsContainer = UIView()
+    private let itemInfo1 = UIView()
+    private let itemInfo2 = UIView()
+    private let dateLabel = GFTitleLabel(alignment: .center, fontSize: 14)
     
     var viewModel: UserInfoVMProtocol!
     var delegate: FollowerRequestDelegate!
@@ -32,12 +32,13 @@ class UserInfoVC: GFDataLoadingVC {
         childVC.didMove(toParent: self)
     }
     
-    //MARK: - Button action
-    @objc func doneTapped() {
+    //MARK: - Done button action
+    @objc private func doneTapped() {
         dismiss(animated: true)
     }
 }
 
+//MARK: - Handle view model outputs
 extension UserInfoVC: UserInfoVMDelegate {
     func handleOutput(_ output: UserInfoOutputs) {
         switch output {
@@ -61,12 +62,14 @@ extension UserInfoVC: UserInfoVMDelegate {
     }
 }
 
+//MARK: - Did select to get github page
 extension UserInfoVC: RepoInfoDelegate {
     func requestGithubPage(with url: String) {
         viewModel.getGithubPage(withURL: url)
     }
 }
 
+//MARK: - Did select to get followers
 extension UserInfoVC: FollowerInfoDelegate {
     func requestFollowers() {
         viewModel.getFollowers()

@@ -21,7 +21,6 @@ class GFItemInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-
     }
     
     private func configure() {
@@ -48,7 +47,6 @@ class GFItemInfoVC: UIViewController {
             actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            
         ])
     }
     

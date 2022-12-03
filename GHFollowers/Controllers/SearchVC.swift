@@ -21,6 +21,7 @@ final class SearchVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        userNameTextField.text = ""
     }
     
     //MARK: - Go to followers age
@@ -43,7 +44,6 @@ final class SearchVC: UIViewController {
         
         view.addSubview(userNameTextField)
         userNameTextField.delegate = self
-        userNameTextField.text = "SAllen0400"
         
         view.addSubview(actionButton)
         

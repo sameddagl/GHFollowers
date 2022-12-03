@@ -39,7 +39,6 @@ class FollowerCell: UICollectionViewCell {
             usernameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
             usernameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -padding)
         ])
-        
     }
     
     required init?(coder: NSCoder) {
