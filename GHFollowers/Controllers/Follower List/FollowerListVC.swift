@@ -54,7 +54,7 @@ class FollowerListVC: GFDataLoadingVC {
     }
     
     @objc private func favoriteUser() {
-        
+        viewModel.saveUserTapped()
     }
 }
 
@@ -76,7 +76,7 @@ extension FollowerListVC: FollowerListDelegate {
         case .updateSearchResults(let filteredFollowers):
             self.filteredFollowers = filteredFollowers
             self.updateData(with: self.filteredFollowers)
-        case .errorOccured(let title, let message):
+        case .throwAlert(let title, let message):
             self.presentAlertVC(title: title, message: message)
         }
     }

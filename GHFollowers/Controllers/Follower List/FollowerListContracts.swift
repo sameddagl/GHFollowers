@@ -14,6 +14,7 @@ protocol FollowerListVMProtocol {
     func searchForUser(filter: String?)
     func getUserInfo(at index: Int)
     func getUserInfo()
+    func saveUserTapped()
     func didRequestFollowers(username: String)
 }
 
@@ -23,7 +24,7 @@ enum FollowerListOutputs {
     case updateFollowers(followers: [FollowerListPresentation])
     case scrollToTop
     case updateSearchResults(followers: [FollowerListPresentation])
-    case errorOccured(title: String, message: String)
+    case throwAlert(title: String, message: String)
 }
 
 enum FollowerListRoute {

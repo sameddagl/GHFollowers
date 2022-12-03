@@ -11,6 +11,7 @@ final class FollowerListVM: FollowerListVMProtocol {
     weak var delegate: FollowerListDelegate?
     
     private let service: NetworkLayerProtocol
+    private let persistanceManager: PersistanceManagerProtocol
     
     private var userName: String
     private var currentPage = 1
@@ -19,9 +20,10 @@ final class FollowerListVM: FollowerListVMProtocol {
     private var followers = [Follower]()
     private var filteredFollowers = [Follower]()
     
-    init(username: String, service: NetworkLayerProtocol) {
+    init(username: String, service: NetworkLayerProtocol, persistanceManager: PersistanceManagerProtocol) {
         self.userName = username
         self.service = service
+        self.persistanceManager = persistanceManager
     }
     
     func load() {
@@ -39,7 +41,7 @@ final class FollowerListVM: FollowerListVMProtocol {
                 let followerPresentation = self.followers.map({FollowerListPresentation(follower: $0)})
                 self.notify(.updateFollowers(followers: followerPresentation))
             case .failure(let error):
-                self.notify(.errorOccured(title: "An error occured", message: error.rawValue))
+                self.notify(.throwAlert(title: "An error occured", message: error.rawValue))
             }
         }
     }
@@ -73,6 +75,36 @@ final class FollowerListVM: FollowerListVMProtocol {
     
     func getUserInfo() {
         delegate?.navigate(to: .userInfo(rootVM:self, selectedUser: self.userName, userItSelf: true))
+    }
+    
+    private func saveUser(user: User) {
+        let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+        persistanceManager.updateDataWith(newFavorite: favorite, actionType: .add) { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                if error == .alreadyInFavorites {
+                    self.notify(.throwAlert(title: "Unable to favorite", message: "You have already favorited this user."))
+                }
+                else {
+                    self.notify(.throwAlert(title: "Something went wrong", message: error.rawValue))
+                }
+            }
+            else {
+                self.notify(.throwAlert(title: "Success!", message: "You have sucessfully favorited this user."))
+            }
+        }
+    }
+    
+    func saveUserTapped() {
+        service.fetchUserInfo(with: userName) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let user):
+                self.saveUser(user: user)
+            case .failure(let error):
+                self.notify(.throwAlert(title: "An error occurde", message: error.rawValue))
+            }
+        }
     }
 
     

@@ -10,7 +10,7 @@ import Foundation
 final class FollowerListBuilder {
     static func make(with userName: String) -> FollowerListVC{
         let vc = FollowerListVC()
-        let viewModel = FollowerListVM(username: userName, service: app.service)
+        let viewModel = FollowerListVM(username: userName, service: app.service, persistanceManager: app.persistanceManager)
         vc.viewModel = viewModel
         viewModel.delegate = vc
         return vc

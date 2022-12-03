@@ -11,4 +11,5 @@ let app = AppContainer()
 
 final class AppContainer {
     let service = NetworkLayer()
+    let persistanceManager = PersistanceManager()
 }
