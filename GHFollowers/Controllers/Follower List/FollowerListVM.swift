@@ -70,11 +70,11 @@ final class FollowerListVM: FollowerListVMProtocol {
     func getUserInfo(at index: Int) {
         //TODO
         let selectedItem = isSearching ? filteredFollowers[index] : followers[index]
-        delegate?.navigate(to: .userInfo(rootVM:self, selectedUser: selectedItem.login, userItSelf: false))
+        delegate?.navigate(to: .userInfo(UserInfoVM(username: selectedItem.login, userItself: false, service: app.service)))
     }
     
     func getUserInfo() {
-        delegate?.navigate(to: .userInfo(rootVM:self, selectedUser: self.userName, userItSelf: true))
+        delegate?.navigate(to: .userInfo(UserInfoVM(username: self.userName, userItself: true, service: app.service)))
     }
     
     private func saveUser(user: User) {
@@ -118,11 +118,5 @@ final class FollowerListVM: FollowerListVMProtocol {
 
     private func notify(_ output: FollowerListOutputs) {
         delegate?.handleOutputs(output)
-    }
-}
-
-extension FollowerListVM: UserInfoDelegate {
-    func didRequestFollowers(with username: String) {
-        self.didRequestFollowers(username: username)
     }
 }

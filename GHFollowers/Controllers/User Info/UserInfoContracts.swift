@@ -18,7 +18,7 @@ enum UserInfoOutputs {
     case isLoading(Bool)
     case updateUserInfo(UserInfoPresentation)
     case getGithubPage(url: String)
-    case getFollowers
+    case getFollowers(username: String)
     case errorOccured(title: String, message: String)
     case userItSelf(Bool)
 }

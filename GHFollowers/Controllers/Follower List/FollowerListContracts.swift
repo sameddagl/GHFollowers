@@ -28,11 +28,15 @@ enum FollowerListOutputs {
 }
 
 enum FollowerListRoute {
-    case userInfo(rootVM: FollowerListVMProtocol, selectedUser: String, userItSelf: Bool)
+    case userInfo(UserInfoVMProtocol)
 }
 
 protocol FollowerListDelegate: AnyObject {
     func handleOutputs(_ output: FollowerListOutputs)
     func navigate(to route: FollowerListRoute)
+}
+
+protocol FollowerRequestDelegate {
+    func didRequestFollowers(with username: String)
 }
 

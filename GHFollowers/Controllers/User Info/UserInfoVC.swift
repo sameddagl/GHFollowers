@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol UserInfoDelegate: AnyObject {
-    func didRequestFollowers(with username: String)
-}
-
 class UserInfoVC: GFDataLoadingVC {
     let detailsContainer = UIView()
     let itemInfo1 = UIView()
@@ -18,6 +14,7 @@ class UserInfoVC: GFDataLoadingVC {
     let dateLabel = GFTitleLabel(alignment: .center, fontSize: 14)
     
     var viewModel: UserInfoVMProtocol!
+    var delegate: FollowerRequestDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +47,8 @@ extension UserInfoVC: UserInfoVMDelegate {
             self.configureUI(user: user)
         case .getGithubPage(let url):
             presentSafariVC(withURL: url)
-        case .getFollowers:
+        case .getFollowers(let username):
+            delegate.didRequestFollowers(with: username)
             dismiss(animated: true)
         case .errorOccured(let title, let message):
             self.presentAlertVC(title: title, message: message)
@@ -63,15 +61,27 @@ extension UserInfoVC: UserInfoVMDelegate {
     }
 }
 
+extension UserInfoVC: RepoInfoDelegate {
+    func requestGithubPage(with url: String) {
+        viewModel.getGithubPage(withURL: url)
+    }
+}
+
+extension UserInfoVC: FollowerInfoDelegate {
+    func requestFollowers() {
+        viewModel.getFollowers()
+    }
+}
+
 //MARK: - UI Related
 extension UserInfoVC {
     private func configureUI(user: UserInfoPresentation) {
         DispatchQueue.main.async {
             let repoInfoVC = GFRepoInfoVC(user: user)
-            repoInfoVC.delegate = self.viewModel as? GFRepoInfoDelegate
+            repoInfoVC.delegate = self
             
             let followerInfoVC = GFFollowerInfoVC(user: user)
-            followerInfoVC.delegate = self.viewModel as? GFFollowerInfoDelegate
+            followerInfoVC.delegate = self
             
             self.add(childVC: GFInfoHeaderVC(user: user), to: self.detailsContainer)
             self.add(childVC: repoInfoVC, to: self.itemInfo1)

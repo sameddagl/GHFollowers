@@ -84,10 +84,16 @@ extension FollowerListVC: FollowerListDelegate {
     //MARK: - Navigation
     func navigate(to route: FollowerListRoute) {
         switch route {
-        case .userInfo(let rootVM, let username, let userItSelf):
-            let vc = UserInfoVCBuilder.make(rootVM: rootVM, with: username, userItSelf: userItSelf)
+        case .userInfo(let viewModel):
+            let vc = UserInfoVCBuilder.make(rootVC:self, with: viewModel)
             present(vc, animated: true)
         }
+    }
+}
+
+extension FollowerListVC: FollowerRequestDelegate {
+    func didRequestFollowers(with username: String) {
+        viewModel.didRequestFollowers(username: username)
     }
 }
 

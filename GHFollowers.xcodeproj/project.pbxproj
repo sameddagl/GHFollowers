@@ -38,6 +38,8 @@
 		2C9339F5293B452300EBB859 /* FavoritePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9339F4293B452300EBB859 /* FavoritePresentation.swift */; };
 		2C9339F7293B453C00EBB859 /* FavoriteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9339F6293B453C00EBB859 /* FavoriteVM.swift */; };
 		2C9339FA293B46E100EBB859 /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9339F9293B46E100EBB859 /* PersistanceManager.swift */; };
+		2C9339FC293B527800EBB859 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9339FB293B527800EBB859 /* FavoriteCell.swift */; };
+		2C9339FE293B550600EBB859 /* FavoriteListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9339FD293B550600EBB859 /* FavoriteListBuilder.swift */; };
 		2C9585AC293A80FD00453989 /* FollowerListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9585AB293A80FD00453989 /* FollowerListVM.swift */; };
 		2C9585AE293A810B00453989 /* FollowerListPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9585AD293A810B00453989 /* FollowerListPresentation.swift */; };
 		2C9585B0293A811400453989 /* FollowerListContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9585AF293A811400453989 /* FollowerListContracts.swift */; };
@@ -88,6 +90,8 @@
 		2C9339F4293B452300EBB859 /* FavoritePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresentation.swift; sourceTree = "<group>"; };
 		2C9339F6293B453C00EBB859 /* FavoriteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVM.swift; sourceTree = "<group>"; };
 		2C9339F9293B46E100EBB859 /* PersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceManager.swift; sourceTree = "<group>"; };
+		2C9339FB293B527800EBB859 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
+		2C9339FD293B550600EBB859 /* FavoriteListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteListBuilder.swift; sourceTree = "<group>"; };
 		2C9585AB293A80FD00453989 /* FollowerListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListVM.swift; sourceTree = "<group>"; };
 		2C9585AD293A810B00453989 /* FollowerListPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListPresentation.swift; sourceTree = "<group>"; };
 		2C9585AF293A811400453989 /* FollowerListContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListContracts.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				2C81F04929311BAF003C2C6A /* FollowerCell.swift */,
+				2C9339FB293B527800EBB859 /* FavoriteCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -296,6 +301,7 @@
 		2C9339F1293B450500EBB859 /* Favorite List */ = {
 			isa = PBXGroup;
 			children = (
+				2C9339FD293B550600EBB859 /* FavoriteListBuilder.swift */,
 				2C9339F2293B451700EBB859 /* FavoriteContracts.swift */,
 				2C81F01E293104C2003C2C6A /* FavoriteListVC.swift */,
 				2C9339F6293B453C00EBB859 /* FavoriteVM.swift */,
@@ -419,6 +425,7 @@
 				2C9BC56B2932260C007946AB /* GFRepoInfoVC.swift in Sources */,
 				2C9339F3293B451700EBB859 /* FavoriteContracts.swift in Sources */,
 				2C81F0242931063F003C2C6A /* GFTitleLabel.swift in Sources */,
+				2C9339FC293B527800EBB859 /* FavoriteCell.swift in Sources */,
 				2C348C0129313B0900079ABC /* GFInfoHeaderVC.swift in Sources */,
 				2C81F01B2930FB8B003C2C6A /* SearchVC.swift in Sources */,
 				2C81F02929310862003C2C6A /* GFButton.swift in Sources */,
@@ -449,6 +456,7 @@
 				2C81F03229310BAA003C2C6A /* Follower.swift in Sources */,
 				2C81F04429311956003C2C6A /* UIHelper.swift in Sources */,
 				2C348BFF293135BA00079ABC /* UserInfoVC.swift in Sources */,
+				2C9339FE293B550600EBB859 /* FavoriteListBuilder.swift in Sources */,
 				2C9585AE293A810B00453989 /* FollowerListPresentation.swift in Sources */,
 				2C81F0402931130A003C2C6A /* GFBodyLabel.swift in Sources */,
 				2C9BC5662932227B007946AB /* GFItemInfo.swift in Sources */,

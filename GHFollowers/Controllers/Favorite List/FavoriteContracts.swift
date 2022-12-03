@@ -11,13 +11,16 @@ protocol FavoriteListVMProtocol {
     var delegate: FavoriteListVMDelegate? { get set }
     func load()
     func selectItem(at index: Int)
+    func didRequestFollowers(username: String)
 }
 
 enum FavoriteListOutputs {
     case updateData(favorites: [FavoriteListPresentation])
+    case popUpUserInfoScreen(viewModel: UserInfoVMProtocol)
+    case didRequestFollowers(viewModel: FollowerListVMProtocol)
     case errorOccured(title: String, message: String)
 }
 
-protocol FavoriteListVMDelegate {
+protocol FavoriteListVMDelegate: AnyObject {
     func handleOutput(_ output: FavoriteListOutputs)
 }

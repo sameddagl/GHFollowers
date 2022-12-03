@@ -7,11 +7,13 @@
 
 import UIKit
 
-protocol GFRepoInfoDelegate: AnyObject {
-    func didRequestGithubPage(withURL url: String)
+protocol RepoInfoDelegate: AnyObject {
+    func requestGithubPage(with url: String)
 }
+
 final class GFRepoInfoVC: GFItemInfoVC {
-    weak var delegate: GFRepoInfoDelegate!
+    
+    weak var delegate: RepoInfoDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +26,7 @@ final class GFRepoInfoVC: GFItemInfoVC {
     }
     
     @objc func actionButtonTapped() {
-        delegate.didRequestGithubPage(withURL: user.htmlUrl)
+        delegate.requestGithubPage(with: user.htmlUrl)
     }
 
 }

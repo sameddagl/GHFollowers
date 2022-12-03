@@ -8,7 +8,7 @@
 import Foundation
 
 final class FavoriteVM: FavoriteListVMProtocol {
-    var delegate: FavoriteListVMDelegate?
+    weak var delegate: FavoriteListVMDelegate?
     
     private let persistanceManager: PersistanceManagerProtocol
     private var favorites = [Follower]()
@@ -31,10 +31,16 @@ final class FavoriteVM: FavoriteListVMProtocol {
     }
     
     func selectItem(at index: Int) {
-        #warning("TODO")
+        let selectedItem = FavoriteListPresentation(user: favorites[index])
+        notify(.popUpUserInfoScreen(viewModel: UserInfoVM(username: selectedItem.username, userItself: false, service: app.service)))
+    }
+    
+    func didRequestFollowers(username: String) {
+        notify(.didRequestFollowers(viewModel: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager)))
     }
     
     private func notify(_ output: FavoriteListOutputs) {
         delegate?.handleOutput(output)
     }
 }
+

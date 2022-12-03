@@ -9,7 +9,6 @@ import Foundation
 
 final class UserInfoVM: UserInfoVMProtocol {
     weak var delegate: UserInfoVMDelegate?
-    weak var requestFollowersDelegate: UserInfoDelegate?
     
     private let service: NetworkLayerProtocol
     
@@ -42,8 +41,7 @@ final class UserInfoVM: UserInfoVMProtocol {
     }
     
     func getFollowers() {
-        requestFollowersDelegate?.didRequestFollowers(with: username)
-        notify(.getFollowers)
+        notify(.getFollowers(username: username))
     }
     
     private func notify(_ output: UserInfoOutputs) {
@@ -51,16 +49,5 @@ final class UserInfoVM: UserInfoVMProtocol {
     }
 }
 
-extension UserInfoVM: GFRepoInfoDelegate {
-    func didRequestGithubPage(withURL url: String) {
-        getGithubPage(withURL: url)
-    }
-}
-
-extension UserInfoVM: GFFollowerInfoDelegate {
-    func didRequestFollowers(with username: String) {
-        getFollowers()
-    }
-}
 
 
