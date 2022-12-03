@@ -12,8 +12,8 @@ class GFItemInfoVC: UIViewController {
     let itemInfo2 = GFItemInfo(frame: .zero)
     let actionButton = GFButton(frame: .zero)
     
-    var user: User!
-    init(user: User) {
+    var user: UserInfoPresentation!
+    init(user: UserInfoPresentation) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
     }
@@ -21,7 +21,6 @@ class GFItemInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-
     }
     
     private func configure() {
@@ -48,7 +47,6 @@ class GFItemInfoVC: UIViewController {
             actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            
         ])
     }
     

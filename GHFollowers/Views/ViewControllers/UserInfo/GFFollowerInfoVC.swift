@@ -7,12 +7,13 @@
 
 import UIKit
 
-protocol GFFollowerInfoDelegate: AnyObject {
-    func didRequestFollowers(with username: String)
+protocol FollowerInfoDelegate: AnyObject {
+    func requestFollowers()
 }
 
-class GFFollowerInfoVC: GFItemInfoVC {
-    weak var delegate: GFFollowerInfoDelegate!
+final class GFFollowerInfoVC: GFItemInfoVC {
+    
+    weak var delegate: FollowerInfoDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class GFFollowerInfoVC: GFItemInfoVC {
     }
     
     @objc private func actionButtonTapped() {
-        delegate.didRequestFollowers(with: user.login)
+        delegate.requestFollowers()
     }
 
 

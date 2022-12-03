@@ -21,9 +21,10 @@ final class SearchVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        userNameTextField.text = ""
     }
     
-    //MARK: - Go to ollowers age
+    //MARK: - Go to followers age
     private func goToFollowersPage() {
         guard let username = userNameTextField.text, !username.isEmpty else {
             presentAlertVC(title: "No username", message: "Please enter a username.")
@@ -32,8 +33,7 @@ final class SearchVC: UIViewController {
         
         userNameTextField.resignFirstResponder()
         
-        let vc = FollowerListVC()
-        vc.username = username
+        let vc = FollowerListBuilder.make(with: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager))
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -44,7 +44,6 @@ final class SearchVC: UIViewController {
         
         view.addSubview(userNameTextField)
         userNameTextField.delegate = self
-        userNameTextField.text = "SAllen0400"
         
         view.addSubview(actionButton)
         

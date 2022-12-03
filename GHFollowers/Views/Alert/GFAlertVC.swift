@@ -69,7 +69,6 @@ final class GFAlertVC: UIViewController {
             
             messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -padding)
         ])
-        
     }
     
     @objc func actionButtonTapped() {

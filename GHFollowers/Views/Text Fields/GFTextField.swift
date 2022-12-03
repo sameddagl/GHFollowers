@@ -40,7 +40,6 @@ final class GFTextField: UITextField {
         clearButtonMode = .whileEditing
         returnKeyType = .search
         autocorrectionType = .no
-        
     }
     
     required init?(coder: NSCoder) {

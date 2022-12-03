@@ -30,7 +30,6 @@ final class GFSecondaryLabel: UILabel {
         
         minimumScaleFactor = 0.7
         adjustsFontSizeToFitWidth = true
-        
     }
 
     required init?(coder: NSCoder) {

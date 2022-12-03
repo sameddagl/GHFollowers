@@ -27,7 +27,7 @@ final class TabBarVC: UITabBarController {
     }
     
     private func createFavoritesVCNavController() -> UINavigationController {
-        let vc = FavoriteListVC()
+        let vc = FavoriteListBuilder.make()
         let navController = UINavigationController(rootViewController: vc)
         
         navController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)

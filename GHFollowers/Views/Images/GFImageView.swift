@@ -13,6 +13,14 @@ class GFImageView: UIImageView {
         super.init(frame: frame)
         configure()
     }
+    
+    private var service: NetworkLayerProtocol!
+    
+    init(service: NetworkLayerProtocol) {
+        super.init(frame: .zero)
+        self.service = service
+        configure()
+    }
 
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +35,7 @@ class GFImageView: UIImageView {
     }
     
     func set(withURL url: String) {
-        NetworkLayer.shared.downloadImage(withURL: url) { image in
+        service.downloadImage(withURL: url) { image in
             if let image = image {
                 DispatchQueue.main.async {
                     self.image = image

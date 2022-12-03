@@ -7,17 +7,17 @@
 
 import UIKit
 
-class GFInfoHeaderVC: UIViewController {
-    let avatarImageView = GFImageView(frame: .zero)
-    let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 20)
-    let nameLabel = GFSecondaryLabel(alingment: .left)
-    let locationImageView = UIImageView()
-    let locationLabel = GFSecondaryLabel(alingment: .left)
-    let bioLabel = GFSecondaryLabel(alingment: .left)
+final class GFInfoHeaderVC: UIViewController {
+    private let avatarImageView = GFImageView(service: app.service)
+    private let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 20)
+    private let nameLabel = GFSecondaryLabel(alingment: .left)
+    private let locationImageView = UIImageView()
+    private let locationLabel = GFSecondaryLabel(alingment: .left)
+    private let bioLabel = GFSecondaryLabel(alingment: .left)
+
+    private var user: UserInfoPresentation!
     
-    var user: User!
-    
-    init(user: User!) {
+    init(user: UserInfoPresentation!) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
         configureUI()
@@ -26,10 +26,9 @@ class GFInfoHeaderVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
-    func configureUI() {
+    private func configureUI() {
         locationImageView.tintColor = .secondaryLabel
         
         let locationStack = UIStackView(arrangedSubviews: [locationImageView, locationLabel])

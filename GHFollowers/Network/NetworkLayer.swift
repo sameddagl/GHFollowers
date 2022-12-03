@@ -7,14 +7,16 @@
 
 import UIKit
 
-final class NetworkLayer {
-    static let shared = NetworkLayer()
-    
+protocol NetworkLayerProtocol {
+    func fetchFollowers(with username: String, page: Int, completion: @escaping(Result<[Follower], GFError>) -> Void)
+    func fetchUserInfo(with username: String, completion: @escaping(Result<User, GFError>) -> Void)
+    func downloadImage(withURL url: String, completion: @escaping(UIImage?) -> Void)
+}
+
+final class NetworkLayer: NetworkLayerProtocol {
     private let baseURL = "https://api.github.com/users/"
     
     private let cache = NSCache<NSString, UIImage>()
-
-    private init() {}
     
     func fetchFollowers(with username: String, page: Int, completion: @escaping(Result<[Follower], GFError>) -> Void) {
         let endPoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
