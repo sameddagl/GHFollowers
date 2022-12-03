@@ -8,12 +8,15 @@
 import UIKit
 
 final class UserInfoVCBuilder {
-    static func make(rootVC: FollowerListVC, with userName: String) -> UserInfoVC{
+    static func make(rootVM: FollowerListVMProtocol, with userName: String, userItSelf: Bool) -> UINavigationController{
         let vc = UserInfoVC()
-        let viewModel = UserInfoVM(username: userName, service: app.service)
+        let viewModel = UserInfoVM(username: userName, userItself: userItSelf, service: app.service)
         vc.viewModel = viewModel
         viewModel.delegate = vc
-        viewModel.requestFollowersDelegate = rootVC
-        return vc
+        viewModel.requestFollowersDelegate = rootVM as? UserInfoDelegate
+        
+        let navController = UIHelper.createVCWithNavController(vc: vc)
+
+        return navController
     }
 }

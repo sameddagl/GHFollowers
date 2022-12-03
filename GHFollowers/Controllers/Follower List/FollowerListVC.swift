@@ -17,7 +17,7 @@ class FollowerListVC: GFDataLoadingVC {
     
     var followers = [FollowerListPresentation]()
     var filteredFollowers = [FollowerListPresentation]()
-    
+        
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,10 +50,7 @@ class FollowerListVC: GFDataLoadingVC {
     }
     
     @objc private func getUserInfo() {
-#warning("TODO")
-        //        let vc = UserInfoVC(username: username, userItSelf: true, delegate: self)
-        //        let navController = UIHelper.createVCWithNavController(vc: vc)
-        //        present(navController, animated: true)
+        viewModel.getUserInfo()
     }
     
     @objc private func favoriteUser() {
@@ -61,6 +58,7 @@ class FollowerListVC: GFDataLoadingVC {
     }
 }
 
+//MARK: - View Model Outputs
 extension FollowerListVC: FollowerListDelegate {
     func handleOutputs(_ output: FollowerListOutputs) {
         switch output {
@@ -71,6 +69,10 @@ extension FollowerListVC: FollowerListDelegate {
         case .updateFollowers(let followers):
             self.followers = followers
             self.updateData(with: self.followers)
+        case .scrollToTop:
+            DispatchQueue.main.async {
+                self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+            }
         case .updateSearchResults(let filteredFollowers):
             self.filteredFollowers = filteredFollowers
             self.updateData(with: self.filteredFollowers)
@@ -79,16 +81,17 @@ extension FollowerListVC: FollowerListDelegate {
         }
     }
     
+    //MARK: - Navigation
     func navigate(to route: FollowerListRoute) {
         switch route {
-        case .userInfo(let username):
-            let vc = UserInfoVCBuilder.make(rootVC: self, with: username)
-            let navController = UIHelper.createVCWithNavController(vc: vc)
-            present(navController, animated: true)
+        case .userInfo(let rootVM, let username, let userItSelf):
+            let vc = UserInfoVCBuilder.make(rootVM: rootVM, with: username, userItSelf: userItSelf)
+            present(vc, animated: true)
         }
     }
 }
 
+//MARK: - Collection View Delegate
 extension FollowerListVC: UICollectionViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let height = view.frame.height
@@ -103,18 +106,13 @@ extension FollowerListVC: UICollectionViewDelegate {
     }
 }
 
+//MARK: - Searching update
 extension FollowerListVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.searchForUser(filter: searchController.searchBar.text)
     }
 }
 
-extension FollowerListVC: UserInfoDelegate {
-    func didRequestFollowers(with username: String) {
-        viewModel.didRequestFollowers(username: username)
-        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-    }
-}
 
 //MARK: - UI Related
 extension FollowerListVC {

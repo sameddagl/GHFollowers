@@ -54,19 +54,12 @@ extension UserInfoVC: UserInfoVMDelegate {
             dismiss(animated: true)
         case .errorOccured(let title, let message):
             self.presentAlertVC(title: title, message: message)
+        case .userItSelf(let userItSelf):
+            if userItSelf {
+                itemInfo2.removeFromSuperview()
+                dateLabel.topAnchor.constraint(equalTo: itemInfo1.bottomAnchor, constant: 20).isActive = true
+            }
         }
-    }
-}
-
-extension UserInfoVC: GFRepoInfoDelegate {
-    func didRequestGithubPage(withURL url: String) {
-        viewModel.getGithubPage(withURL: url)
-    }
-}
-
-extension UserInfoVC: GFFollowerInfoDelegate {
-    func didRequestFollowers(with username: String) {
-        viewModel.getFollowers()
     }
 }
 
@@ -75,10 +68,10 @@ extension UserInfoVC {
     private func configureUI(user: UserInfoPresentation) {
         DispatchQueue.main.async {
             let repoInfoVC = GFRepoInfoVC(user: user)
-            repoInfoVC.delegate = self
+            repoInfoVC.delegate = self.viewModel as? GFRepoInfoDelegate
             
             let followerInfoVC = GFFollowerInfoVC(user: user)
-            followerInfoVC.delegate = self
+            followerInfoVC.delegate = self.viewModel as? GFFollowerInfoDelegate
             
             self.add(childVC: GFInfoHeaderVC(user: user), to: self.detailsContainer)
             self.add(childVC: repoInfoVC, to: self.itemInfo1)

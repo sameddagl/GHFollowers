@@ -21,12 +21,13 @@ enum FollowerListOutputs {
     case updateTitle(String)
     case isLoading(Bool)
     case updateFollowers(followers: [FollowerListPresentation])
+    case scrollToTop
     case updateSearchResults(followers: [FollowerListPresentation])
     case errorOccured(title: String, message: String)
 }
 
 enum FollowerListRoute {
-    case userInfo(selectedUser: String)
+    case userInfo(rootVM: FollowerListVMProtocol, selectedUser: String, userItSelf: Bool)
 }
 
 protocol FollowerListDelegate: AnyObject {

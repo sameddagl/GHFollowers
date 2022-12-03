@@ -20,6 +20,7 @@ enum UserInfoOutputs {
     case getGithubPage(url: String)
     case getFollowers
     case errorOccured(title: String, message: String)
+    case userItSelf(Bool)
 }
 
 protocol UserInfoVMDelegate: AnyObject {

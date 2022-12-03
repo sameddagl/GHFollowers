@@ -14,13 +14,16 @@ final class UserInfoVM: UserInfoVMProtocol {
     private let service: NetworkLayerProtocol
     
     private var username: String!
+    private var userItself: Bool
     
-    init(username: String, service: NetworkLayerProtocol) {
+    init(username: String, userItself: Bool, service: NetworkLayerProtocol) {
         self.username = username
         self.service = service
+        self.userItself = userItself
     }
     
     func load() {
+        notify(.userItSelf(userItself))
         notify(.isLoading(true))
         service.fetchUserInfo(with: username) { [weak self] result in
             guard let self = self else { return }
@@ -45,6 +48,18 @@ final class UserInfoVM: UserInfoVMProtocol {
     
     private func notify(_ output: UserInfoOutputs) {
         delegate?.handleOutput(output)
+    }
+}
+
+extension UserInfoVM: GFRepoInfoDelegate {
+    func didRequestGithubPage(withURL url: String) {
+        getGithubPage(withURL: url)
+    }
+}
+
+extension UserInfoVM: GFFollowerInfoDelegate {
+    func didRequestFollowers(with username: String) {
+        getFollowers()
     }
 }
 
