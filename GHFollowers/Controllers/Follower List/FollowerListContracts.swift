@@ -11,6 +11,7 @@ protocol FollowerListVMProtocol {
     var delegate: FollowerListDelegate? { get set }
     func load()
     func pagination(height: CGFloat, contentHeight: CGFloat, offset: CGFloat)
+    func didPullToRefresh()
     func searchForUser(filter: String?)
     func getUserInfo(at index: Int)
     func getUserInfo()

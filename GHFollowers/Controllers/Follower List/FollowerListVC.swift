@@ -58,6 +58,10 @@ class FollowerListVC: GFDataLoadingVC {
     @objc private func favoriteUser() {
         viewModel.saveUserTapped()
     }
+    
+    @objc private func didPullToRefresh() {
+        viewModel.didPullToRefresh()
+    }
 }
 
 //MARK: - Handle view model outputs
@@ -71,6 +75,9 @@ extension FollowerListVC: FollowerListDelegate {
         case .updateFollowers(let followers):
             self.followers = followers
             self.updateData(with: self.followers)
+            DispatchQueue.main.async() {
+                self.collectionView.refreshControl?.endRefreshing()
+            }
         case .scrollToTop:
             DispatchQueue.main.async {
                 self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
@@ -145,6 +152,10 @@ extension FollowerListVC {
         collectionView.delegate = self
         
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     private func configureSearchController() {
