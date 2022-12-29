@@ -10,7 +10,7 @@ import Foundation
 final class FollowerListVM: FollowerListVMProtocol {
     weak var delegate: FollowerListDelegate?
     
-    private let service: NetworkLayerProtocol
+    private let service: FollowerServiceProtocol
     private let persistanceManager: PersistanceManagerProtocol
     
     private var userName: String
@@ -20,7 +20,7 @@ final class FollowerListVM: FollowerListVMProtocol {
     private var followers = [Follower]()
     private var filteredFollowers = [Follower]()
     
-    init(username: String, service: NetworkLayerProtocol, persistanceManager: PersistanceManagerProtocol) {
+    init(username: String, service: FollowerServiceProtocol, persistanceManager: PersistanceManagerProtocol) {
         self.userName = username
         self.service = service
         self.persistanceManager = persistanceManager
@@ -30,7 +30,7 @@ final class FollowerListVM: FollowerListVMProtocol {
     func load() {
         notify(.updateTitle(userName))
         notify(.isLoading(true))
-        service.fetchFollowers(with: userName, page: currentPage) { [weak self] result in
+        service.fetchFollowers(username: userName, page: currentPage) { [weak self] result in
             guard let self = self else { return }
             self.notify(.isLoading(false))
             switch result {
@@ -75,25 +75,25 @@ final class FollowerListVM: FollowerListVMProtocol {
     //MARK: - Get selected user info
     func getUserInfo(at index: Int) {
         let selectedItem = isSearching ? filteredFollowers[index] : followers[index]
-        delegate?.navigate(to: .userInfo(UserInfoVM(username: selectedItem.login, userItself: false, service: app.service)))
+        delegate?.navigate(to: .userInfo(UserInfoVM(username: selectedItem.login, userItself: false, service: ServiceContainer.userService)))
     }
     
     //MARK: - Get searched user info
     func getUserInfo() {
-        delegate?.navigate(to: .userInfo(UserInfoVM(username: self.userName, userItself: true, service: app.service)))
+        delegate?.navigate(to: .userInfo(UserInfoVM(username: self.userName, userItself: true, service: ServiceContainer.userService)))
     }
     
     //MARK: - Save user
     func saveUserTapped() {
-        service.fetchUserInfo(with: userName) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let user):
-                self.saveUser(user: user)
-            case .failure(let error):
-                self.notify(.throwAlert(title: "An error occurde", message: error.rawValue))
-            }
-        }
+//        service.fetchUserInfo(with: userName) { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let user):
+//                self.saveUser(user: user)
+//            case .failure(let error):
+//                self.notify(.throwAlert(title: "An error occured", message: error.rawValue))
+//            }
+//        }
     }
     
     //MARK: - Request followers from user info

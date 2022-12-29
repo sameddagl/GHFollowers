@@ -33,7 +33,7 @@ final class SearchVC: UIViewController {
         
         userNameTextField.resignFirstResponder()
         
-        let vc = FollowerListBuilder.make(with: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager))
+        let vc = FollowerListBuilder.make(with: FollowerListVM(username: username, service: ServiceContainer.followerService, persistanceManager: AppContainer.persistanceManager))
         navigationController?.pushViewController(vc, animated: true)
     }
     

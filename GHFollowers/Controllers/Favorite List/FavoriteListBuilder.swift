@@ -10,7 +10,7 @@ import UIKit
 final class FavoriteListBuilder {
     static func make() -> FavoriteListVC{
         let vc = FavoriteListVC()
-        let viewModel = FavoriteVM(persistanceManager: app.persistanceManager)
+        let viewModel = FavoriteVM(persistanceManager: AppContainer.persistanceManager)
         vc.viewModel = viewModel
         viewModel.delegate = vc
         return vc

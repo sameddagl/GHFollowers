@@ -12,9 +12,9 @@ enum PersistanceActionType {
 }
 
 protocol PersistanceManagerProtocol {
-    func updateDataWith(newFavorite: Follower, actionType:PersistanceActionType ,completion: @escaping(GFError?) -> Void)
-    func retrieveData(completion: @escaping(Result<[Follower], GFError>) -> Void)
-    func save(favorites: [Follower]) -> GFError?
+    func updateDataWith(newFavorite: Follower, actionType:PersistanceActionType ,completion: @escaping(ServiceError?) -> Void)
+    func retrieveData(completion: @escaping(Result<[Follower], ServiceError>) -> Void)
+    func save(favorites: [Follower]) -> ServiceError?
 }
 
 final class PersistanceManager: PersistanceManagerProtocol {
@@ -23,7 +23,7 @@ final class PersistanceManager: PersistanceManagerProtocol {
         static let favorites = "favorites"
     }
     
-    func updateDataWith(newFavorite: Follower, actionType:PersistanceActionType ,completion: @escaping(GFError?) -> Void) {
+    func updateDataWith(newFavorite: Follower, actionType:PersistanceActionType ,completion: @escaping(ServiceError?) -> Void) {
         retrieveData { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -48,7 +48,7 @@ final class PersistanceManager: PersistanceManagerProtocol {
         }
     }
     
-    func retrieveData(completion: @escaping(Result<[Follower], GFError>) -> Void) {
+    func retrieveData(completion: @escaping(Result<[Follower], ServiceError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: DefaultsKey.favorites) as? Data else {
             completion(.success([]))
             return
@@ -63,7 +63,7 @@ final class PersistanceManager: PersistanceManagerProtocol {
         }
     }
     
-    func save(favorites: [Follower]) -> GFError?{
+    func save(favorites: [Follower]) -> ServiceError?{
         do {
             let encodedFavorites = try JSONEncoder().encode(favorites)
             defaults.set(encodedFavorites, forKey: DefaultsKey.favorites)

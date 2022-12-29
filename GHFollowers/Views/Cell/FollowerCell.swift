@@ -10,7 +10,7 @@ import UIKit
 class FollowerCell: UICollectionViewCell {
     static let reuseID = "FollowerCell"
     
-    private let avatarImageView = GFImageView(service: app.service)
+    private let avatarImageView = GFImageView(service: AppContainer.service)
     private let usernameLabel = GFTitleLabel(alignment: .center, fontSize: 16)
     
     override init(frame: CGRect) {

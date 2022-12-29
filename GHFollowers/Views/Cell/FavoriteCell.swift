@@ -9,7 +9,7 @@ import UIKit
 
 class GFFavoriteCell: UITableViewCell {
     static let reuseIdentifier = "FavoriteCell"
-    private let avatarImageView = GFImageView(service: app.service)
+    private let avatarImageView = GFImageView(service: AppContainer.service)
     private let title = GFTitleLabel(alignment: .left, fontSize: 25)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

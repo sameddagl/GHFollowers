@@ -1,13 +1,13 @@
 //
-//  GFError.swift
+//  ServiceError.swift
 //  GHFollowers
 //
-//  Created by Samed Dağlı on 25.11.2022.
+//  Created by Samed Dağlı on 29.12.2022.
 //
 
 import Foundation
 
-enum GFError: String, Error {
+enum ServiceError: String, Error {
     case invalidUsername    = "This username created an invalid request. Please check out typos and try again."
     case noUser             = "There is no user corresponding to this username"
     case unableToComplete   = "Unable to complete your request. Please check your internet connection"

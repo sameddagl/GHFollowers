@@ -58,6 +58,7 @@ class FollowerListVC: GFDataLoadingVC {
     @objc private func favoriteUser() {
         viewModel.saveUserTapped()
     }
+
 }
 
 //MARK: - Handle view model outputs

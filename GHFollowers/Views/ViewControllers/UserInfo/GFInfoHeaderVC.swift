@@ -8,7 +8,7 @@
 import UIKit
 
 final class GFInfoHeaderVC: UIViewController {
-    private let avatarImageView = GFImageView(service: app.service)
+    private let avatarImageView = GFImageView(service: AppContainer.service)
     private let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 20)
     private let nameLabel = GFSecondaryLabel(alingment: .left)
     private let locationImageView = UIImageView()
