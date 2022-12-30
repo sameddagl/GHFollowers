@@ -59,6 +59,9 @@ class FollowerListVC: GFDataLoadingVC {
         viewModel.saveUserTapped()
     }
 
+    @objc private func didPullToRefresh() {
+        viewModel.didPullToRefresh()
+    }
 }
 
 //MARK: - Handle view model outputs
