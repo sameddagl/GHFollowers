@@ -1,7 +1,7 @@
 # GHFollowers
 
 #About
-It was built based on the tutorial by Sean Allen with some additional features. On top of that it was built with MVVM Design Pattern.
+It was built based on the tutorial by Sean Allen with some additional features. On top of that it was built with MVVM Design Pattern and generic network layer.
 
 # Features
 - You can search for a user and favorite it.
@@ -11,6 +11,7 @@ It was built based on the tutorial by Sean Allen with some additional features. 
 
 # Technology and features
 - MVVM Architectural Pattern
+- Generic Network Layer
 - Programmatic UI without Storyboards
 - No third party libraries
 - Diffable Data Source & Compositional Layout.
