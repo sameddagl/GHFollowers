@@ -72,6 +72,12 @@ final class FollowerListVM: FollowerListVMProtocol {
         }
     }
     
+    func didPullToRefresh() {
+        self.followers.removeAll()
+        currentPage = 1
+        load()
+    }
+    
     //MARK: - Get selected user info
     func getUserInfo(at index: Int) {
         let selectedItem = isSearching ? filteredFollowers[index] : followers[index]
