@@ -7,9 +7,12 @@
 
 import Foundation
 
-let app = AppContainer()
+struct AppContainer {
+    static let service = Service()
+    static let persistanceManager = PersistanceManager()
+}
 
-final class AppContainer {
-    let service = NetworkLayer()
-    let persistanceManager = PersistanceManager()
+struct ServiceContainer {
+    static let followerService = FollowerService(service: AppContainer.service)
+    static let userService = UserService(service: AppContainer.service)
 }

@@ -14,9 +14,9 @@ class GFImageView: UIImageView {
         configure()
     }
     
-    private var service: NetworkLayerProtocol!
+    private var service: ServiceProtocol!
     
-    init(service: NetworkLayerProtocol) {
+    init(service: ServiceProtocol) {
         super.init(frame: .zero)
         self.service = service
         configure()

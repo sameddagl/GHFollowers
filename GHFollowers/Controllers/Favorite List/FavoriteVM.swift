@@ -34,7 +34,7 @@ final class FavoriteVM: FavoriteListVMProtocol {
     //MARK: - User select a favorite
     func selectItem(at index: Int) {
         let selectedItem = FavoriteListPresentation(user: favorites[index])
-        notify(.popUpUserInfoScreen(viewModel: UserInfoVM(username: selectedItem.username, userItself: false, service: app.service)))
+        notify(.popUpUserInfoScreen(viewModel: UserInfoVM(username: selectedItem.username, userItself: false, service: ServiceContainer.userService)))
     }
     
     //MARK: - User delete a favorite
@@ -53,7 +53,7 @@ final class FavoriteVM: FavoriteListVMProtocol {
     
     //MARK: - User select to get followers from user info
     func didRequestFollowers(username: String) {
-        notify(.didRequestFollowers(viewModel: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager)))
+//        notify(.didRequestFollowers(viewModel: FollowerListVM(username: username, service: app.service, persistanceManager: app.persistanceManager)))
     }
     
     private func notify(_ output: FavoriteListOutputs) {
