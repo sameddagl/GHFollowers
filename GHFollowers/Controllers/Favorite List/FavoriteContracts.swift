@@ -18,11 +18,15 @@ protocol FavoriteListVMProtocol {
 enum FavoriteListOutputs {
     case updateData(favorites: [FavoriteListPresentation])
     case removeFromFavoritesAt(index: Int)
-    case popUpUserInfoScreen(viewModel: UserInfoVMProtocol)
-    case didRequestFollowers(viewModel: FollowerListVMProtocol)
     case errorOccured(title: String, message: String)
+}
+
+enum FavoriteListRoute {
+    case popUpUserInfoScreen(viewModel: UserInfoVMProtocol)
+    case pushFollowerList(viewModel: FollowerListVMProtocol)
 }
 
 protocol FavoriteListVMDelegate: AnyObject {
     func handleOutput(_ output: FavoriteListOutputs)
+    func navigate(to route: FavoriteListRoute)
 }

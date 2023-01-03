@@ -11,26 +11,28 @@ final class FollowerListVM: FollowerListVMProtocol {
     weak var delegate: FollowerListDelegate?
     
     private let service: FollowerServiceProtocol
+    private let userService: UserServiceProtocol
     private let persistanceManager: PersistanceManagerProtocol
+    private var username: String
     
-    private var userName: String
+    init(username: String, service: FollowerServiceProtocol, userService: UserServiceProtocol, persistanceManager: PersistanceManagerProtocol) {
+        self.username = username
+        self.service = service
+        self.userService = userService
+        self.persistanceManager = persistanceManager
+    }
+    
     private var currentPage = 1
     private var hasMoreFollowers = true
     private var isSearching = false
     private var followers = [Follower]()
     private var filteredFollowers = [Follower]()
     
-    init(username: String, service: FollowerServiceProtocol, persistanceManager: PersistanceManagerProtocol) {
-        self.userName = username
-        self.service = service
-        self.persistanceManager = persistanceManager
-    }
-    
     //MARK: - Load followers
     func load() {
-        notify(.updateTitle(userName))
+        notify(.updateTitle(username))
         notify(.isLoading(true))
-        service.fetchFollowers(username: userName, page: currentPage) { [weak self] result in
+        service.fetchFollowers(username: username, page: currentPage) { [weak self] result in
             guard let self = self else { return }
             self.notify(.isLoading(false))
             switch result {
@@ -86,26 +88,26 @@ final class FollowerListVM: FollowerListVMProtocol {
     
     //MARK: - Get searched user info
     func getUserInfo() {
-        delegate?.navigate(to: .userInfo(UserInfoVM(username: self.userName, userItself: true, service: ServiceContainer.userService)))
+        delegate?.navigate(to: .userInfo(UserInfoVM(username: self.username, userItself: true, service: ServiceContainer.userService)))
     }
     
     //MARK: - Save user
     func saveUserTapped() {
-//        service.fetchUserInfo(with: userName) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let user):
-//                self.saveUser(user: user)
-//            case .failure(let error):
-//                self.notify(.throwAlert(title: "An error occured", message: error.rawValue))
-//            }
-//        }
+        userService.fetchUserInfo(username: username) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let user):
+                self.saveUser(user: user)
+            case .failure(let error):
+                self.notify(.throwAlert(title: "An error occured", message: error.rawValue))
+            }
+        }
     }
     
     //MARK: - Request followers from user info
     func didRequestFollowers(username: String) {
         followers.removeAll()
-        self.userName = username
+        self.username = username
         currentPage = 1
         load()
         notify(.scrollToTop)

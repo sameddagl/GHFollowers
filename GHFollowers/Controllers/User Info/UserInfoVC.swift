@@ -46,11 +46,6 @@ extension UserInfoVC: UserInfoVMDelegate {
             isLoading ? self.showLoadingScreen() : self.dismissLoadingScreen()
         case .updateUserInfo(let user):
             self.configureUI(user: user)
-        case .getGithubPage(let url):
-            presentSafariVC(withURL: url)
-        case .getFollowers(let username):
-            delegate.didRequestFollowers(with: username)
-            dismiss(animated: true)
         case .errorOccured(let title, let message):
             self.presentAlertVC(title: title, message: message)
         case .userItSelf(let userItSelf):
@@ -58,6 +53,16 @@ extension UserInfoVC: UserInfoVMDelegate {
                 itemInfo2.removeFromSuperview()
                 dateLabel.topAnchor.constraint(equalTo: itemInfo1.bottomAnchor, constant: 20).isActive = true
             }
+        }
+    }
+    
+    func navigate(to route: UserInfoRoute) {
+        switch route {
+        case .githubPage(let url):
+            presentSafariVC(withURL: url)
+        case .followerList(let username):
+            delegate.didRequestFollowers(with: username)
+            dismiss(animated: true)
         }
     }
 }

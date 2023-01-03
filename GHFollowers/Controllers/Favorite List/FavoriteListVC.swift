@@ -38,10 +38,15 @@ extension FavoriteListVC: FavoriteListVMDelegate {
             self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         case .errorOccured(let title, let message):
             self.presentAlertVC(title: title, message: message)
+        }
+    }
+    
+    func navigate(to route: FavoriteListRoute) {
+        switch route {
         case .popUpUserInfoScreen(let viewModel):
             let vc = UserInfoVCBuilder.makeFromFavoriteVC(rootVC: self, with: viewModel)
             present(vc, animated: true)
-        case .didRequestFollowers(let viewModel):
+        case .pushFollowerList(let viewModel):
             dismiss(animated: true)
             let vc = FollowerListBuilder.make(with: viewModel)
             navigationController?.pushViewController(vc, animated: true)

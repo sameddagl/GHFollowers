@@ -17,12 +17,16 @@ protocol UserInfoVMProtocol {
 enum UserInfoOutputs {
     case isLoading(Bool)
     case updateUserInfo(UserInfoPresentation)
-    case getGithubPage(url: String)
-    case getFollowers(username: String)
     case errorOccured(title: String, message: String)
     case userItSelf(Bool)
 }
 
+enum UserInfoRoute {
+    case githubPage(url: String)
+    case followerList(username: String)
+}
+
 protocol UserInfoVMDelegate: AnyObject {
     func handleOutput(_ output: UserInfoOutputs)
+    func navigate(to route: UserInfoRoute)
 }

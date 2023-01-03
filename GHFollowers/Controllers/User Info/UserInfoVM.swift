@@ -39,12 +39,12 @@ final class UserInfoVM: UserInfoVMProtocol {
     
     //MARK: - User select to get github page
     func getGithubPage(withURL url: String) {
-        notify(.getGithubPage(url: url))
+        delegate?.navigate(to: .githubPage(url: url))
     }
     
     //MARK: - User select to get followers of user
     func getFollowers() {
-        notify(.getFollowers(username: username))
+        delegate?.navigate(to: .followerList(username: username))
     }
     
     //MARK: - Handle with outputs
